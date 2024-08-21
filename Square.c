@@ -5,7 +5,7 @@
 
 int iszero(double a) {
     double e = 1e-8;
-    return abs(a) < e;
+    return fabs(a) < e;
 }
 
 /*
@@ -55,7 +55,7 @@ int Square_Solution (double a, double b, double c, double* x1, double* x2) {
     if (iszero(a)) return Linear_Solution(b, c, x1);
 
     double d = b * b - 4 * a * c;
-
+    
     if (iszero(d)) {
         *x1 = -b / (2 * a);
         return 1;

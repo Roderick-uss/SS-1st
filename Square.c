@@ -1,9 +1,18 @@
 #include <stdio.h>
 #include <math.h>
 #include <assert.h>
-#include "Square_Solvation.h"
+#include "square_solvator.h"
+#include <stdint.h>
 
-int iszero(double a) {
+static void swap(double* x1, double* x2) {
+    uint64_t* a = (uint64_t*)x1;
+    uint64_t* b = (uint64_t*)x2;
+    *a ^= *b;
+    *b ^= *a;
+    *a ^= *b;
+}
+
+int is_zero(double a) {
     double e = 1e-8;
     return fabs(a) < e;
 }
@@ -18,13 +27,13 @@ int iszero(double a) {
     @errors a, b if nan and x if inf
 */
 
-int Linear_Solution(double a, double b, double* x) {
+static int solve_linear(double a, double b, double* x) {
     assert (isfinite(a));
     assert (isfinite(b));
 
     assert (x != 0);
 
-    if (iszero(a)) return iszero(b)? SS_INF_ROOTS : 0;
+    if (is_zero(a)) return is_zero(b)? SS_INF_ROOTS : 0;
 
     *x = -b / a;
     return 1;
@@ -42,7 +51,7 @@ int Linear_Solution(double a, double b, double* x) {
     @errors a, b, c if nan and x1, x2 if inf
 */
 
-int Square_Solution (double a, double b, double c, double* x1, double* x2) {
+int solve_square (double a, double b, double c, double* x1, double* x2) {
     assert (isfinite(a));
     assert (isfinite(b));
     assert (isfinite(c));
@@ -51,12 +60,11 @@ int Square_Solution (double a, double b, double c, double* x1, double* x2) {
     assert (x2 != 0);
     assert (x1 != x2);
     
-    
-    if (iszero(a)) return Linear_Solution(b, c, x1);
+    if (is_zero(a)) return solve_linear(b, c, x1);
 
     double d = b * b - 4 * a * c;
     
-    if (iszero(d)) {
+    if (is_zero(d)) {
         *x1 = -b / (2 * a);
         return 1;
     }
@@ -67,5 +75,6 @@ int Square_Solution (double a, double b, double c, double* x1, double* x2) {
     d = sqrt(d);
     *x1 = (-b + d) * a;
     *x2 = (-b - d) * a;
-    return iszero(*x1 - *x2)? 1 : 2;
+    if (*x1 > *x2) swap(x1, x2);
+    return is_zero(*x1 - *x2)? 1 : 2;
 }

@@ -4,6 +4,12 @@
 #include "square_solvator.h"
 #include <stdint.h>
 
+/*
+    @brief swaps two doubles
+    @param x1 - address of 1st number
+    @param x2 - address of 2nd number
+*/
+
 static void swap(double* x1, double* x2) {
     uint64_t* a = (uint64_t*)x1;
     uint64_t* b = (uint64_t*)x2;
@@ -12,9 +18,16 @@ static void swap(double* x1, double* x2) {
     *a ^= *b;
 }
 
-int is_zero(double a) {
+/*
+    @brief checks is double number 0
+    @param num - double number
+    @returns 1 if true
+             0 if not
+*/
+
+int is_zero(double num) {
     double e = 1e-8;
-    return fabs(a) < e;
+    return fabs(num) < e;
 }
 
 /*
@@ -22,7 +35,7 @@ int is_zero(double a) {
     @detail solving linear equation ax + b = 0
     @param a - 1st quotient
     @param b - 2nd quotient
-    @param x - root's adress
+    @param x - address
     @returns number of roots
     @errors a, b if nan and x if inf
 */
@@ -45,8 +58,8 @@ static int solve_linear(double a, double b, double* x) {
     @param a - 1st quotient
     @param b - 2nd quotient
     @param c - 3rd quotient
-    @param x1 - & 1st root
-    @param x2 - & 2nd root
+    @param x1 - address of 1st root
+    @param x2 - address 2nd root
     @returns number of roots
     @errors a, b, c if nan and x1, x2 if inf
 */

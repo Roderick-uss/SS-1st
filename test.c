@@ -18,10 +18,11 @@ int check(int num, double a, double b, double c, double x1_exp, double x2_exp, i
     int n_roots = solve_square(a, b, c, &x1, &x2);
 
     if (n_roots != n_roots_exp || !is_zero(x1 - x1_exp) || !is_zero(x2 - x2_exp)) {
+        
         LOG_FATAL("RUINED\nTest %d\n"
         "Args: a = %lg, b = %lg, c = %lg\n"
-        "Your answer: x1 = %lg, x2 = %lg, nRoots = %d\n"
-        "Test snswer: x1 = %lg, x2 = %lg, nRoots = %d\n",
+        "Prog answer: x1 = %lg, x2 = %lg, nRoots = %d\n"
+        "Test answer: x1 = %lg, x2 = %lg, nRoots = %d\n",
         num,
         a, b, c,
         x1, x2, n_roots,
@@ -53,13 +54,12 @@ void tester2() {
     test pull[] = {
         {1, 0, -5, -2.23606797749, +2.23606797749, 2},
         {1, 2, -3, -3, 1, 2},
-        {0, 0, 0, 0, 0, -1},
+        {0, 0, 0, 0, 0, SS_INF_ROOTS},
         {2, 3, 1, -1, -0.5, 2},
         {1, 0, -9, -3, 3, 2},
         {0, 0, 7.953293, 0, 0, 0},
         {0, 25, 100, -4, 0, 1},
-        {4, 10, 34, 0, 0, 0},
-        {0, 0, 0, 0, 0, -1}
+        {4, 10, 34, 0, 0, 5},
     };
 
     for (int i = 0; i < sizeof(pull) / sizeof(test); ++i) {

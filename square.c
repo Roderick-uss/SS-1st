@@ -59,12 +59,12 @@ static int solve_linear(double a, double b, double* x) {
     @param b - 2nd quotient
     @param c - 3rd quotient
     @param x1 - address of 1st root
-    @param x2 - address 2nd root
+    @param x2 - address of 2nd root
     @returns number of roots
     @errors a, b, c if nan and x1, x2 if inf
 */
 
-int solve_square (double a, double b, double c, double* x1, double* x2) {
+int solve_square(double a, double b, double c, double* x1, double* x2) {
     assert (isfinite(a));
     assert (isfinite(b));
     assert (isfinite(c));

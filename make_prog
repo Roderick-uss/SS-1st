@@ -8,7 +8,7 @@ main: main.o square.o in_out.o
 	gcc square.o main.o in_out.o -o MAIN
 
 main.o: main.c
-	gcc main.c -c -o main.o
+	gcc main.c -c -o main.o	
 square.o: square.c
 	gcc square.c -c -o square.o
 in_out.o: in_out.c

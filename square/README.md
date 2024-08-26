@@ -24,12 +24,12 @@ ax^2 + bx + c = 0
 <details>
 <summary>How to build and run</summary>
 
-- build *MAIN.exe*:
+- build ***MAIN.exe***:
     > ```sh
     > make -f make_prog main
     > ```
 
-- run *MAIN.exe*:
+- run ***MAIN.exe***:
     > ```sh
     > ./MAIN
     > ```
@@ -45,7 +45,7 @@ ax^2 + bx + c = 0
 
 > 
 
-> If you change program files(any *.c or *.h, except test.c) rebuild *MAIN.exe*.
+> If you change program files(any __*.c__ or __*.h,__ except test.c) rebuild ***MAIN.exe***.
 
 </details>
 
@@ -63,12 +63,12 @@ and prints error if test answer and receiver answer not equal.
 <details>
 <summary>How to build and run</summary>
 
-- build *TEST.exe*:
+- build ***TEST.exe***:
     > ```sh
     > make -f make_prog test
     > ```
 
-- run *TEST.exe*:
+- run ***TEST.exe***:
     > ```sh
     > ./TEST
     > ```
@@ -86,19 +86,19 @@ this message contains test and program answers comparison
 <details>
 <summary>tester1</summary>
 
-- enter test's data in *tester.txt*
+- enter test's data in ***tester.txt***
 - input order a b c x1 x2 n_roots
 - separate with **' '**  between parameters
 - separate with **'\n'** between tests
 
-> you don't need to rebuild *TEST.exe* if you have changed *tester.txt*
+> you don't need to rebuild ***TEST.exe*** if you have changed ***tester.txt***.
 
 </details>
 
 <details>
 <summary>tester2</summary>
 
-- enter test's data in *test.c* in tester2 functoin
+- enter test's data in ***test.c*** in tester2 functoin
 - input order a b c x1 x2 n_roots
 - separate with **', '**  between parameters
 - separate with **'\n'** between tests
@@ -106,7 +106,7 @@ this message contains test and program answers comparison
 
 </details>
 
-> If you change program files(any *.c or *.h, except main.c) rebuild *MAIN.exe*.
+> If you change program files(any __*.c__ or __*.h,__ except ***main.c***) rebuild ***MAIN.exe***.
 
 </details>
 

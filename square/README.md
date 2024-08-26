@@ -95,16 +95,14 @@ this message contains test and program answers comparison
 
 </details>
 
+<details>
+<summary>tester2</summary>
+
 - enter test's data in *test.c* in tester2 functoin
 - input order a b c x1 x2 n_roots
 - separate with **', '**  between parameters
 - separate with **'\n'** between tests
 - surround tests with **'\{'** and **'\},'**
-
-<details>
-<summary>tester2</summary>
-
-
 
 </details>
 

@@ -25,14 +25,14 @@ ax^2 + bx + c = 0
 <summary>How to build and run</summary>
 
 - build *MAIN.exe*:
-    - ```sh
-    - make -f make_prog main
-    - ```
+    > ```sh
+    > make -f make_prog main
+    > ```
 
 - run *MAIN.exe*:
-    - ```sh
-    - ./MAIN
-    - ```
+    > ```sh
+    > ./MAIN
+    > ```
 
 </details>
 
@@ -63,14 +63,14 @@ and prints error if test answer and receiver answer not equal.
 <summary>How to build and run</summary>
 
 - build *TEST.exe*:
-    - ```sh
-    - make -f make_prog test
-    - ```
+    > ```sh
+    > make -f make_prog test
+    > ```
 
 - run *TEST.exe*:
-    - ```sh
-    - ./TEST
-    - ```
+    > ```sh
+    > ./TEST
+    > ```
 
 </details>
 

@@ -39,10 +39,11 @@ ax^2 + bx + c = 0
 <details>
 <summary>What it does</summary>
 
-- Enter 3 numbers separated by ' ' or 'n'.
-- Program solve equation with entered quotients and gives ansver.
+- enter 3 numbers separated with **' '** or **'\n'** they will be a b c quotients
+- if you entered not a number, program will ask you to repeat
+- program solve equation with entered quotients and gives answers
 
-> If you entered not a number, program will ask you to repeat
+> 
 
 > If you change program files(any *.c or *.h, except test.c) rebuild *MAIN.exe*.
 
@@ -77,15 +78,18 @@ and prints error if test answer and receiver answer not equal.
 <details>
 <summary>What it does</summary>
 
-It has two testers with different realisatoin:
+- it has two testers with different realisatoins
+- if all is good program ends without error message
+- if program finds different solvation to test's, it prints error message<br>
+this message contains test and program answers comparison
 
 <details>
 <summary>tester1</summary>
 
 - enter test's data in *tester.txt*
 - input order a b c x1 x2 n_roots
-- separate with ' '  between parameters
-- separate with '\n' between tests
+- separate with **' '**  between parameters
+- separate with **'\n'** between tests
 
 > you don't need to rebuild *TEST.exe* if you have changed *tester.txt*
 
@@ -93,9 +97,9 @@ It has two testers with different realisatoin:
 
 - enter test's data in *test.c* in tester2 functoin
 - input order a b c x1 x2 n_roots
-- separate with ', '  between parameters
-- separate with '\n' between tests
-- surround tests with '\{', '\},'
+- separate with **', '**  between parameters
+- separate with **'\n'** between tests
+- surround tests with **'\{'** and **'\},'**
 
 <details>
 <summary>tester2</summary>
@@ -103,11 +107,6 @@ It has two testers with different realisatoin:
 
 
 </details>
-
-> if all is good program ends without error message
-
-> if program finds different to test's root, it prints error message
-> this message contains whitch test went wrong
 
 > If you change program files(any *.c or *.h, except main.c) rebuild *MAIN.exe*.
 

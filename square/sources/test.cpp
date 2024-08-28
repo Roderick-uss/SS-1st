@@ -3,9 +3,10 @@
 #include <assert.h>
 #include <malloc.h>
 
-#define FREE(data) {free(data); data = NULL;}
 #include "colors.h"
 #include "square_solvator.h"
+
+#define FREE(data) {free(data); data = NULL;}
 
 static bool check(int num, equation eq);
 static void tester_struct();
@@ -101,7 +102,7 @@ static void tester_struct() {
 static void tester_file() { // todo filename as arg
     char* file_name = (char *)calloc((size_t)MAX_LINE, sizeof(char));
 
-    LOG_INFO("\nEnter the name of file with tests\nFile must be with ");
+    LOG_INFO("\nEnter the name of file with tests\nIt must be with ");
     printf(".txt");
     LOG_INFO(" extension\n");
     FILE* fp = get_file_name(file_name);

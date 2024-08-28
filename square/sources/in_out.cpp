@@ -7,13 +7,18 @@
 
 
 static void get_line(char* line) {
-    for(char* curr_ch = line; *curr_ch != '\n' && *curr_ch != EOF; curr_ch++) {
-        *curr_ch = (char)getchar();
-        printf("1");
-    }
+    size_t i = 0;
+    while((line[i++] = (char)getchar()) != '\n');
     return;
 }
 
+static void get_line_strip(char* line) {
+    get_line(line);
+    size_t i = 0;
+    while(line[i++] != '\n');
+    line[--i] = '\0';
+    return;
+}
 
 /*
     @brief fflushs input buffer
@@ -36,7 +41,7 @@ FILE* get_file_name(char* file_name) {
     while (fp == NULL){
 //        scanf("%s", file_name);
 //        buff_fflush();
-        get_line(file_name);
+        get_line_strip(file_name);
         fp = fopen(file_name, "r");
         if (fp == NULL) {
             LOG_FATAL("Incorrect input\n No such txt file(");
@@ -65,7 +70,7 @@ void print_roots(equation* eq) {
 
         case SS_TWO_ROOTS:
             LOG_INFO("Equation has two roots: ");
-            printf("%.4lf %.4lf\n", eq->x1, eq->x2);//! why?
+            printf("%.4lf %.4lf\n", eq->x1, eq->x2);
             break;
 
         case SS_INF_ROOTS:

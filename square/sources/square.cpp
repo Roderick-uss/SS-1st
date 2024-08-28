@@ -1,15 +1,15 @@
-#include <stdio.h>
-#include <math.h>
 #include <assert.h>
-#include "square_solvator.h"
+#include <math.h>
 #include <stdint.h>
+
+#include "square_solvator.h"
 
 /*
     @brief swaps two doubles
     @param x1 - address of 1st number
     @param x2 - address of 2nd number
 */
- 
+
 static void swap(double* x1, double* x2) {
     uint64_t* a = (uint64_t*)x1;
     uint64_t* b = (uint64_t*)x2;
@@ -25,8 +25,9 @@ static void swap(double* x1, double* x2) {
              0 if not
 */
 
-int is_zero(double num) {
-    double e = 1e-8;
+bool is_zero(double num) {
+    double e = 1e-8; // todo think
+
     return fabs(num) < e;
 }
 
@@ -40,16 +41,24 @@ int is_zero(double num) {
     @errors a, b if nan and x if inf
 */
 
-static int solve_linear(double a, double b, double* x) {
+static void solve_linear(equation* eq) {
+    double a = eq->a, b = eq->b;
+
     assert (isfinite(a));
     assert (isfinite(b));
 
-    assert (x != 0);
 
-    if (is_zero(a)) return is_zero(b)? SS_INF_ROOTS : 0;
+    assert (&(eq->x1));
 
-    *x = -b / a;
-    return 1;
+    if (is_zero(a)) {
+        eq->n_roots = is_zero(b) ? SS_INF_ROOTS : SS_ZERO_ROOTS;
+
+        return;
+    }
+    eq->x1 = -b / a;
+    eq->n_roots = SS_ONE_ROOT;
+
+    return;
 }
 
 /*
@@ -64,30 +73,41 @@ static int solve_linear(double a, double b, double* x) {
     @errors a, b, c if nan and x1, x2 if inf
 */
 
-int solve_square(double a, double b, double c, double* x1, double* x2) {
+void solve_square(equation* eq) {
+    double a = eq->a, b = eq->b, c = eq->c;
     assert (isfinite(a));
     assert (isfinite(b));
     assert (isfinite(c));
 
-    assert (x1 != 0);
-    assert (x2 != 0);
-    assert (x1 != x2);
-    
-    if (is_zero(a)) return solve_linear(b, c, x1);
+    assert (eq);
+    assert (&(eq->x1));
+    assert (&(eq->x2));
+    assert (&(eq->x1) != &(eq->x2));
+
+    if (is_zero(a)) {
+        solve_linear(eq);
+        return;
+    }
 
     double d = b * b - 4 * a * c;
-    
+
     if (is_zero(d)) {
-        *x1 = -b / (2 * a);
-        return 1;
+        eq->x1 = -b / (2 * a);
+        eq->n_roots = SS_ONE_ROOT;
+
+        return;
     }
     if (d < 0) {
-        return 0;
+        eq->n_roots = SS_ZERO_ROOTS;
+
+        return;
     }
-    a = 1 / (2*a);
+    a = 1 / (2 * a);
     d = sqrt(d);
-    *x1 = (-b + d) * a;
-    *x2 = (-b - d) * a;
-    if (*x1 > *x2) swap(x1, x2);
-    return is_zero(*x1 - *x2)? 1 : 2;
+    eq->x1 = (-b + d) * a;
+    eq->x2 = (-b - d) * a;
+    if (eq->x1 > eq->x2) swap(&(eq->x1), &(eq->x2));
+    eq->n_roots = is_zero(eq->x1 - eq->x2) ? SS_ONE_ROOT : SS_TWO_ROOTS;
+
+    return;
 }

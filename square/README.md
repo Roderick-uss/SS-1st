@@ -26,7 +26,7 @@ ax^2 + bx + c = 0
 
 - build ***MAIN.exe***:
     > ```sh
-    > make -f make_prog main
+    > make
     > ```
 
 - run ***MAIN.exe***:
@@ -65,7 +65,7 @@ and prints error if test answer and receiver answer not equal.
 
 - build ***TEST.exe***:
     > ```sh
-    > make -f make_prog test
+    > make test
     > ```
 
 - run ***TEST.exe***:

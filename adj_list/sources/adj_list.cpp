@@ -9,80 +9,98 @@
 #include "run_error.h"
 #include "queue.h"
 
-static void add_edge(edge* pos, edge e) {
-    *pos = e;
+static void graph_assert(Graph graph) {
+    assert(graph.size);
+    assert(graph.sizes);
+    assert(graph.self);
+}
+
+static void add_edge(Edge* pos, Edge edge) {
+    assert(pos);
+
+    *pos = edge;
     return;
 }
 
-graph create_graph(size_t size, size_t* sizes) {
-    graph g = {};
-    g.size = size;
-    g.sizes = sizes;
-    g.self = (edge**)calloc(size, sizeof(edge*));
+Graph create_graph(size_t size, size_t* sizes) {
+    assert(sizes);
+    assert(size);
+
+    Graph graph = {};
+    graph.size = size;
+    graph.sizes = sizes;
+    graph.self = (Edge**)calloc(size, sizeof(Edge*));
 
     for (size_t i = 0; i < size; ++i) {
         assert(i < size);
-        g.self[i] = (edge*)calloc(sizes[i], sizeof(edge));
 
-        if (!g.self[i]) {
-            run_memory_error(sizes[i] * sizeof(edge));
-            return {};
-        }
+        graph.self[i] = (Edge*)calloc(sizes[i], sizeof(Edge));
+
+        if (!graph.self[i]) run_memory_error(sizes[i] * sizeof(Edge));
     }
 
-    return g;
+    return graph;
 }
 
-void clear_graph(graph g) {
-    for (size_t i = 0; i < g.size; ++i) {
-        assert(i < g.size);
-        FREE(g.self[i]);
+void clear_graph(Graph graph) {
+    graph_assert(graph);
+
+    for (size_t i = 0; i < graph.size; ++i) {
+        assert(i < graph.size);
+
+        FREE(graph.self[i]);
     }
-    FREE(g.self);
-    FREE(g.sizes);
-    g.size = 0;
+    FREE(graph.self);
+    FREE(graph.sizes);
+    graph.size = 0;
     return;
 }
 
-void bfs(graph g, int root) {
-    bool* used  = (bool*)calloc(g.size, sizeof(bool));
-    int*  deep  = (int* )calloc(g.size, sizeof(int ));
-    queue order = que_init(g.size);
+void bfs(Graph graph, int root) {
+    graph_assert(graph);
 
-    if(!used) run_memory_error(1);
-    if(!deep) run_memory_error(1);
+    bool* is_vert_used  = (bool*)calloc(graph.size, sizeof(bool));
+    int*  vert_deep  = (int* )calloc(graph.size, sizeof(int ));
+    queue order = que_init(graph.size);
+
+    if(!is_vert_used) run_memory_error(1);
+    if(!vert_deep) run_memory_error(1);
 
     push_back(&order, root);
-    int now = 0;
-    edge now_edge = {};
-    used[root] = 1;
+    int curr_vert = 0;
+    Edge now_edge = {};
+    is_vert_used[root] = 1;
 
     while(!empty(&order)) {
-        now = pop_front(&order);
+        curr_vert = pop_front(&order);
 
-        for (size_t i = 0; i < g.sizes[now]; ++i) {
-            now_edge = g.self[now][i];
+        for (size_t i = 0; i < graph.sizes[curr_vert]; ++i) {
+            now_edge = graph.self[curr_vert][i];
 
-            if (!used[now_edge.node]) {
-                used[now_edge.node] = 1;
-                deep[now_edge.node] = deep[now] + 1;
+            if (!is_vert_used[now_edge.node]) {
+                is_vert_used[now_edge.node] = 1;
+                vert_deep[now_edge.node] = vert_deep[curr_vert] + 1;
                 push_back(&order,now_edge.node);
             }
         }
     }
 
-    FREE(used);
+    FREE(is_vert_used);
     que_clear(&order);
 
-    endl();
-    print_line(deep, g.size);
+    printf("\n");
+    for(size_t i = 0; i < graph.size; ++i) LOG_INFO("%2llu ", i + 1);
+    printf("\n");
+    for(size_t i = 0; i < graph.size; ++i) printf("%2d ", vert_deep[i]);
+    printf("\n");
+    return;
 
-    FREE(deep);
+    FREE(vert_deep);
 
     return;
 }
 
-graph input_graph() {
+Graph input_graph() {
     struct edge_in {
         int node1, node2, weight;
     };
@@ -93,11 +111,11 @@ graph input_graph() {
     size_t*  sizes = (size_t*)  calloc(size,   sizeof(size_t));
     edge_in* edges = (edge_in*) calloc(n_edge, sizeof(edge_in));
 
-    if(!node_i) run_memory_error(1);
-    if(!sizes)  run_memory_error(1);
-    if(!edges)  run_memory_error(1);
+    if(!node_i) run_memory_error(size   * sizeof(size_t));
+    if(!sizes)  run_memory_error(size   * sizeof(size_t));
+    if(!edges)  run_memory_error(n_edge * sizeof(edge_in));
 
-    edge_in* now;
+    edge_in* now = NULL;
 
     LOG_INFO("Enter edges in order node node weith\n");
 
@@ -112,32 +130,36 @@ graph input_graph() {
         sizes[--(now->node2)]++;
     }
 
-    graph g = create_graph(size, sizes);
+    Graph graph = create_graph(size, sizes);
 
     for (size_t i = 0; i < n_edge; ++i) {
+        assert(i < n_edge);
         now = &edges[i];
 
-        add_edge(g.self[now->node1] + node_i[now->node1]++, {now->node2, now->weight});
-        add_edge(g.self[now->node2] + node_i[now->node2]++, {now->node1, now->weight});
+        add_edge(graph.self[now->node1] + node_i[now->node1]++, {now->node2, now->weight});
+        add_edge(graph.self[now->node2] + node_i[now->node2]++, {now->node1, now->weight});
     }
 
     FREE(node_i);
     FREE(edges);
 
-    return g;
+    return graph;
 }
 
-void print_graph(graph g) {
+void print_graph(Graph graph) {
+    graph_assert(graph);
     LOG_INFO("\nNodes and their edges\n\n");
-    edge now;
+    Edge now = {};
 
-    for(size_t i = 0; i < g.size; ++i) {
+    for(size_t i = 0; i < graph.size; ++i) {
         LOG_INFO("%llu ]", i + 1);
-        for (size_t j = 0; j < g.sizes[i]; ++j) {
-            now = g.self[i][j];
+        assert(i < graph.size);
+        for (size_t j = 0; j < graph.sizes[i]; ++j) {
+            assert(j < graph.sizes[i]);
+            now = graph.self[i][j];
             printf(" -(%d)> %d |", now.weight, now.node + 1);
         }
-        endl();
+        printf("\n");
     }
-    endl();
+    printf("\n");
 }

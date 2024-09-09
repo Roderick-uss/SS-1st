@@ -31,7 +31,7 @@ void push_back(queue* que, int num) {
     *(que->back++) = num;
     return;
 }
-
+// todo realloc
 int pop_front(queue* que) {
     return *(que->front++);
 }

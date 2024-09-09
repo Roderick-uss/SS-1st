@@ -42,12 +42,6 @@ FILE* enter_file_name(const char* const file_content) {
     return fp;
 }
 
-void endl() {
-    printf("\n");
-
-    return;
-}
-
 int enter_one_int(const char* const intro) {
     int num = 0;
 
@@ -65,12 +59,4 @@ int enter_one_int(const char* const intro) {
 
 int enter_edge(int* node1, int* node2, int* weight) {
     return scanf("%d %d %d", node1, node2, weight);
-}
-
-void print_line(void* data, size_t size) {
-    for(size_t i = 0; i < size; ++i) LOG_INFO("%2llu ", i + 1);
-    endl();
-    for(size_t i = 0; i < size; ++i) printf("%2d ", *((int*)data + i));
-    endl();
-    return;
 }

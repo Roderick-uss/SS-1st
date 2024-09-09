@@ -10,24 +10,25 @@ ded_flags = -Wshadow -Winit-self -Wredundant-decls -Wcast-align -Wundef \
 
 .phony: all clean intall uninstall
 
-B_PREFIX = bin
-O_PREFIX = objects
-S_PREFIX = sources
-OBJECTS =     objects/main.o   objects/io.o objects/commoner.o objects/adj_list.o objects/run_error.o objects/queue.o
-HEADER_LIST = sources/colors.h sources/io.h sources/commoner.h sources/adj_list.h sources/run_error.h sources/queue.h
+B_PREFIX = bin/
+O_PREFIX = objects/
+S_PREFIX = sources/
+SOURCES = main io commoner adj_list run_error queue
+OBJECTS := $(patsubst %,$(O_PREFIX)%.o,$(SOURCES))
+HEADER_LIST =$(S_PREFIX)*.h
 
 all: main
 
 run: main
-	./$(B_PREFIX)/main
+	./$(B_PREFIX)main
 
 main: $(OBJECTS)
 	@mkdir -p $(B_PREFIX)
-	@gcc $(ded_flags) $^ -o $(B_PREFIX)/$@
+	@gcc $(ded_flags) $^ -o $(B_PREFIX)$@
 
-$(O_PREFIX)/%.o: $(S_PREFIX)/%.cpp $(HEADER_LIST)
+$(O_PREFIX)%.o: $(S_PREFIX)%.cpp $(HEADER_LIST)
 	@mkdir -p $(O_PREFIX)
 	@gcc $(ded_flags) $< -c -o $@
 
 clean:
-	rm -rf $(O_PREFIX)/*.o $(B_PREFIX)/*.exe
+	rm -rf $(O_PREFIX)*.o $(B_PREFIX)*.exe

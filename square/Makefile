@@ -3,32 +3,32 @@ ded_flags = -Wshadow -Winit-self -Wredundant-decls -Wcast-align -Wundef \
 
 .phony: all clean intall uninstall test_run main_run
 
-B_PREFIX = bin
-O_PREFIX = objects
-S_PREFIX = sources
-T_OBJECTS = objects/test.o objects/in_out.o objects/square.o
-M_OBJECTS = objects/main.o objects/in_out.o objects/square.o
-HEADER_LIST = sources/square_solvator.h sources/colors.h
-
+B_PREFIX = bin/
+O_PREFIX = objects/
+S_PREFIX = sources/
+SOURCES = in_out square
+M_OBJECTS := $(patsubst %,$(O_PREFIX)%.o,$(SOURCES) main)
+T_OBJECTS := $(patsubst %,$(O_PREFIX)%.o,$(SOURCES) test)
+HEADER_LIST =$(S_PREFIX)*.h
 all: main test
 
 main_run: main
-	./$(B_PREFIX)/main
+	./$(B_PREFIX)main
 
 test_run: test
-	./$(B_PREFIX)/test
+	./$(B_PREFIX)test
 
 test: $(T_OBJECTS)
 	@mkdir -p $(B_PREFIX)
-	@gcc $(ded_flags) $^ -o $(B_PREFIX)/$@
+	@gcc $(ded_flags) $^ -o $(B_PREFIX)$@
 
 main: $(M_OBJECTS)
 	@mkdir -p $(B_PREFIX)
-	@gcc $(ded_flags) $^ -o $(B_PREFIX)/$@
+	@gcc $(ded_flags) $^ -o $(B_PREFIX)$@
 
-$(O_PREFIX)/%.o : $(S_PREFIX)/%.cpp $(HEADER_LIST)
+$(O_PREFIX)%.o : $(S_PREFIX)%.cpp $(HEADER_LIST)
 	@mkdir -p $(O_PREFIX)
 	@gcc $(ded_flags) $< -c -o $@
 
 clean:
-	rm -rf $(O_PREFIX)/*.o $(B_PREFIX)/*.exe
+	rm -rf $(O_PREFIX)*.o $(B_PREFIX)*.exe

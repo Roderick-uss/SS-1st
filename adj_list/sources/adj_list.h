@@ -3,21 +3,21 @@
 
 #include <math.h>
 
-struct edge{
+struct Edge{
     int node;
     int weight;
 };
 
-struct graph{
+struct Graph{
     size_t size;
     size_t* sizes;
-    edge** self;
+    Edge** self;
 };
 
-void  bfs(graph g, int root);
-void  clear_graph(graph g);
-void  print_graph(graph g);
-graph create_graph(size_t size, size_t* sizes);
-graph input_graph();
+void  bfs(Graph graph, int root);
+void  clear_graph(Graph graph);
+void  print_graph(Graph graph);
+Graph create_graph(size_t size, size_t* sizes);
+Graph input_graph();
 
 #endif // ADJ_LIST

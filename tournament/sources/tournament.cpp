@@ -9,9 +9,7 @@ TOURNAMENT res_swap(TOURNAMENT res) {
             res = VICT;
             break;
         case DRAW:
-            break;
         case SPACE:
-            break;
         default:
             break;
     }

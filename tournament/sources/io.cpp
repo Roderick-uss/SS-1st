@@ -50,32 +50,6 @@ void endl() {
     return;
 }
 
-void print_cell_num(int num) {
-    if      (num >  0) LOG_INFO(" %d|", num);
-
-    else if (num == 0) LOG_INFO("  |");
-
-    else               LOG_INFO("___");
-
-    return;
-}
-
-void print_cell(TOURNAMENT res) {
-    if (res == SPACE) printf(" X ");
-    else              printf("%2d ", (int)res);
-
-    return;
-}
-
-void run_game_error(int game_num, size_t p, const char* const error) {
-    LOG_FATAL("\nGAME ");
-    printf(" %d", game_num);
-    LOG_FATAL(" ERROR\n%s", error);
-    printf(": %3d\n", (int)p);
-
-    return;
-}
-
 int enter_one_number(const char* const intro) {
     int num = 0;
 
@@ -98,17 +72,17 @@ void print_line(void* data, size_t size) {
     return;
 }
 
-game* enter_games_file(size_t* x_size, size_t* game_num) {
+Game* enter_games_file(size_t* x_size, size_t* game_num) {
     FILE* fp = enter_file_name("tournament data");
 
     fscanf(fp, "%llu %llu", x_size, game_num);
 
-    game* g = (game*)calloc(*game_num, sizeof(game));
+    Game* game = (Game*)calloc(*game_num, sizeof(Game));
 
-    game* game_now = NULL;
+    Game* game_now = NULL;
 
     for (size_t curr_game = 0; curr_game < *game_num; ++curr_game) {
-        game_now = (game*)get_1d((void*)g, curr_game, *game_num, sizeof(game));
+        game_now = (Game*)get_1d((void*)game, curr_game, *game_num, sizeof(Game));
 
         fscanf(fp, "%llu %llu %d",
             &(game_now->p1),
@@ -118,5 +92,5 @@ game* enter_games_file(size_t* x_size, size_t* game_num) {
 
     fclose(fp);
 
-    return g;
+    return game;
 }

@@ -16,8 +16,9 @@ int main() {
     game_res(tour, x_size, 5, 1, 4, DRAW);
     game_res(tour, x_size, 6, 4, 3, LOSS);
 */
-    size_t x_size = 0;
-    TOURNAMENT* tour = go_tournament(&x_size);
+    size_t x_size = 10;
+//    TOURNAMENT* tour = go_tournament(&x_size);
+    TOURNAMENT* tour = create_treangle(x_size);
     print_tournament(tour, x_size);
     clear_treangle(tour);
     return 0;

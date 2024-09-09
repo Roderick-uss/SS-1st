@@ -1,11 +1,36 @@
 #include <malloc.h>
 #include <math.h>
+#include <stdio.h>
 
 #include "commoner.h"
 #include "io.h"
 #include "list_base.h"
 #include "tournament.h"
 #include "treangle.h"
+
+static void print_cell_num(int num) {
+    if      (num >  0) LOG_INFO("%2d|", num);
+    else if (num == 0) LOG_INFO("  |");
+    else               LOG_INFO("___");
+
+    return;
+}
+
+static void print_cell(TOURNAMENT res) {
+    if (res == SPACE) printf(" X ");
+    else              printf("%2d ", (int)res);
+
+    return;
+}
+
+static void run_game_error(int game_num, size_t p, const char* const error) {
+    LOG_FATAL("\nGAME ");
+    printf(" %d", game_num);
+    LOG_FATAL(" ERROR\n%s", error);
+    printf(": %3d\n", (int)p);
+
+    return;
+}
 
 static size_t get_size(size_t num) {
     return num * (num - 1) / 2;
@@ -15,23 +40,23 @@ static void mem_set(TOURNAMENT* data, TOURNAMENT element, size_t num_of_elements
     for (size_t i = 0; i < num_of_elements; ++i) *(data + i) = element;
 }
 
-void game_res(TOURNAMENT* data, size_t x_size, int game_num, game g) {
-    if (g.p1 > g.p2) {
-        swap(&g.p1, &g.p2);
-        g.res = res_swap(g.res);
+void game_res(TOURNAMENT* data, size_t x_size, int game_num, Game game) {
+    if (game.p1 > game.p2) {
+        swap(&game.p1, &game.p2);
+        game.res = res_swap(game.res);
     }
 
-    size_t pos = get_size(g.p2 - 1) + g.p1 - 1;
+    size_t pos = get_size(game.p2 - 1) + game.p1 - 1;
 
-    if (g.p1 == g.p2 ||  g.p1 > x_size || g.p2 > x_size) {
-        if (g.p1 == g.p2)                  run_game_error(game_num, g.p1, "Simmular players"     );
-        if (g.p1 > x_size)                 run_game_error(game_num, g.p1, "Player is out of list");
-        if (g.p1 != g.p2 && g.p2 > x_size) run_game_error(game_num, g.p2, "Player is out of list");
+    if (game.p1 == game.p2 ||  game.p1 > x_size || game.p2 > x_size) {
+        if (game.p1 == game.p2)                     run_game_error(game_num, game.p1, "Simmular players"     );
+        if (game.p1 > x_size)                       run_game_error(game_num, game.p1, "Player is out of list");
+        if (game.p1 != game.p2 && game.p2 > x_size) run_game_error(game_num, game.p2, "Player is out of list");
         endl();
         return;
     }
 
-    *(TOURNAMENT*)(get_1d((void*)data, pos, get_size(x_size), sizeof(TOURNAMENT))) = g.res;
+    *(TOURNAMENT*)(get_1d((void*)data, pos, get_size(x_size), sizeof(TOURNAMENT))) = game.res;
 
     return;
 }
@@ -79,17 +104,17 @@ void print_tournament(TOURNAMENT* data, size_t x_size) {
 
 TOURNAMENT* go_tournament(size_t* x_size) {
     size_t game_num = NULL;
-    game* g = enter_games_file(x_size, &game_num);
-    game* game_now = NULL;
+    Game* game = enter_games_file(x_size, &game_num);
+    Game* game_now = NULL;
     TOURNAMENT* tour = create_treangle(*x_size);
 
     for (size_t curr_game = 0; curr_game < game_num; ++curr_game) {
-        game_now = (game*)get_1d((void*)g, curr_game, game_num, sizeof(game));
+        game_now = (Game*)get_1d((void*)game, curr_game, game_num, sizeof(Game));
 
         game_res(tour, *x_size, (int)curr_game, *game_now);
     }
 
-    FREE(g);
+    FREE(game);
 
     return tour;
 }

@@ -10,7 +10,7 @@ enum TOURNAMENT {
     DRAW = 1,
 };
 
-struct game {
+struct Game {
     size_t p1, p2;
     TOURNAMENT res;
 };

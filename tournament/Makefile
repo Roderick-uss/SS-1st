@@ -8,26 +8,27 @@ ded_flags = -Wshadow -Winit-self -Wredundant-decls -Wcast-align -Wundef \
 -Wstack-usage=8192 -Wstrict-aliasing -Wstrict-null-sentinel             \
 -Wtype-limits -Wwrite-strings -Werror=vla -D_DEBUG -D_EJUDGE_CLIENT_SIDE
 
-.phony: all clean intall uninstall
+.phony: all clean install uninstall
 
-B_PREFIX = bin
-O_PREFIX = objects
-S_PREFIX = sources
-OBJECTS =     objects/main.o   objects/list_base.o objects/io.o objects/treangle.o objects/commoner.o objects/tournament.o
-HEADER_LIST = sources/colors.h sources/list_base.h sources/io.h sources/treangle.h sources/commoner.h sources/tournament.h
+B_PREFIX = bin/
+O_PREFIX = objects/
+S_PREFIX = sources/
+SOURCES = main commoner list_base io tournament treangle
+OBJECTS := $(patsubst %,$(O_PREFIX)%.o,$(SOURCES))
+HEADER_LIST = $(S_PREFIX)*.h
 
 all: main
 
 run: main
-	./$(B_PREFIX)/main
+	./$(B_PREFIX)main
 
 main: $(OBJECTS)
 	@mkdir -p $(B_PREFIX)
-	@gcc $(ded_flags) $^ -o $(B_PREFIX)/$@
+	@gcc $(ded_flags) $^ -o $(B_PREFIX)$@
 
-$(O_PREFIX)/%.o: $(S_PREFIX)/%.cpp $(HEADER_LIST)
+$(O_PREFIX)%.o: $(S_PREFIX)%.cpp $(HEADER_LIST)
 	@mkdir -p $(O_PREFIX)
 	@gcc $(ded_flags) $< -c -o $@
 
 clean:
-	rm -rf $(O_PREFIX)/*.o $(B_PREFIX)/*.exe
+	rm -rf $(O_PREFIX)*.o $(B_PREFIX)*.exe

@@ -9,6 +9,7 @@ enum Text {
 
 void swap_char(long long int* char_a, long long int* char_b);
 
+char* remove_punctuation(char* line);
 void swap_str(char* line_a, char* line_b);
 int  strcmp_ (char* line_a, char* line_b);
 
@@ -23,7 +24,7 @@ int main() {
 
     for (size_t i = 0; i < (size_t)MAX_LENGHT; ++i)
         fgets(text[i], MAX_LENGHT, stream_in);
-        
+
     sort_text(text);
 
     print_text(text, stream_out);
@@ -34,7 +35,7 @@ int main() {
     return 0;
 }
 
-void swap_char(long long int* char_a, long long int* char_b) {\
+void swap_char(long long int* char_a, long long int* char_b) {
     assert(char_a);
     assert(char_b);
 
@@ -55,14 +56,24 @@ void swap_str(char* line_a, char* line_b) {
     return;
 }
 
+char* remove_punctuation(char* line) {
+    assert(line);
+
+    while(*line != '\0' && !(isalpha(*line))) ++line;
+
+    return line;
+}
+
 int strcmp_(char *line_a, char* line_b) {
     assert(line_a);
     assert(line_b);
 
-    int i = 0;
-    while(line_a[i] && line_b[i] && !(line_b[i] - line_a[i])) i++;
+    int res = 0;
+    while(!res && *line_a) {
+        res = (tolower(*remove_punctuation(line_a++)) - tolower(*remove_punctuation(line_b++)));
+    }
 
-    return line_a[i] - line_b[i];
+    return res;
 }
 
 void sort_text(char text[NUM_LINES][MAX_LENGHT]) {
